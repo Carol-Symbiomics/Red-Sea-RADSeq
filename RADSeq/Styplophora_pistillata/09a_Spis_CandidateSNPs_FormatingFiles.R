@@ -4,7 +4,7 @@
 
 ##### 09a Candidate SNPs for Positive Selection  - Stylophora pistillata #####
 
-#### 09a.01. Formating SNP file for BAYESCAN (25,318 SNPs, 312 individuals)
+#### 09a.01. Formating SNP file for BAYESCAN
 
 # libraries
 library(hierfstat)
@@ -52,16 +52,4 @@ system("awk -v numRows=25303 -f tst.awk tmp  > ./BAYPASS/spis.popgenclust.baypas
 system("awk 'NR==FNR{a[$1]++;next} !($4 in a)' monomophicsnpsindex2remove.txt snps.id.dictionary.BAYESCAN.txt | awk 'BEGIN{OFS="\t";}{print $1, $2, $3}' | awk -v OFS='\t' '{print$0, NR}' > snps.id.dictionary.BAYPASS.txt") #CHROM, POS, ID, index
 
 ## REMEMBER THAT BAYESCAN AND PAYPASS DICTIONARY ARE DIFFERENT BECAUSE I HAD TO MANUALLY REMOVE MONOMORPHIC SNPS FROM THE BAYPASS GENOTYPE FILE (15 SNPs)
-
-
-
-
-
-
-
-
-
-
-
-
 

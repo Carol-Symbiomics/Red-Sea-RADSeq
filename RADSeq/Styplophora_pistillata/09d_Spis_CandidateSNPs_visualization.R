@@ -10,11 +10,11 @@
 library(scales)
 library(dplyr)
 library(ggplot2)
-source("/home/buitracn/~/RADseq/Genotyping/tools/manhattan.plot.function.qman.R") # I've manipulate the original qqman manhattan function to change the line types and colors
+source("/home/buitracn/RADseq/Genotyping/tools/manhattan.plot.function.qman.R") # I've manipulate the original qqman manhattan function to change the line types and colors
 
 
 # Working directory
-setwd("~/~/RADseq/Genotyping/p1_mac4_r80_448samples/spis_positive_selection_analyses_20210308/summary_BAYESCAN_BAYPASS")
+setwd("~/RADseq/Genotyping/p1_mac4_r80_448samples/spis_positive_selection_analyses_20210308/summary_BAYESCAN_BAYPASS")
 
 # positive selection lists
 spis.bayescan.positive <- read.delim("../BAYESCAN/spis.BAYESCAN.pr100.whitelist.markers.positive.selection.tsv", sep = "") # 76 positive candidates

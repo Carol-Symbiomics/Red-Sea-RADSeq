@@ -14,7 +14,7 @@ library(scales)
 library(dplyr) 
 library(dendextend) #easy manypulation of dendograms
 
-p1.mac4.r0.8.448samples
+# Set working directory
 setwd("~/RADseq/Genotyping/Spis/p1_mac4_r80_448samples/spis_SNPrelate_20210222")
 
 # Check the filtered strata file
@@ -78,6 +78,7 @@ sampID.annot <-data.frame(sample.id = sample.id.18reef[match(pca.spis.18reef$sam
 
 # Set color pallete for the 18 reefs
 cols.18reef <- c("#0066CC","#3399FF","#009999", "#00CCCC","#33FFFF","#009900","#66CC00","#80FF00","#CCCC00","#FFFF00","#FFFF66","#D2691E","#FF8000","#FFB266","#CC0000","#FF3333","#FF6666","#FF9999" )
+show_col(cols.18reef)
 
 # Create a color vector corresponding to levels in the reef vector
 cols.18reef_t1 <- cols.18reef[sampID.annot$reef]
@@ -123,7 +124,7 @@ colnames(spis.matrix )=spis.ibs.18reef[["sample.id"]]
 rownames(spis.matrix )=spis.ibs.18reef[["sample.id"]]
 write.table(spis.matrix, file = "spis.ind.distance.matrix.IBS.snprelate.tsv", row.names = T, col.names = T, quote = F)
   
-#multidimensional scaling analysis on the n×n matrix of genome-wide IBS pairwise distances
+# multidimensional scaling analysis on the n×n matrix of genome-wide IBS pairwise distances
 loc.18reef <- cmdscale(1 - spis.ibs.18reef$ibs, k = 2)
 x <- loc.18reef[, 1]; y <- loc.18reef[, 2]
 
@@ -158,15 +159,15 @@ spis.ibs.18reef.hc <- snpgdsHCluster(
 
 # Determine groups of individuals by population information
 rv2 <- snpgdsCutTree(spis.ibs.18reef.hc, samp.group=factor(reef.code.18reef, levels = c("MAQ_R1", "MAQ_R2", "WAJ_R1", "WAJ_R3", "WAJ_R4", "YAN_R1", "YAN_R3", "YAN_R4", "KAU_R1", "KAU_R2", "KAU_R3", "DOG_R1", "DOG_R2", "DOG_R3", "FAR_R1", "FAR_R2", "FAR_R3", "FAR_R4")))
-#Create 18 groups.
+# Create 18 groups.
 names(rv2)
 # [1] "sample.id"   "z.threshold" "outlier.n"   "samp.order"  "samp.group" 
 # [6] "dmat"        "dendrogram" 
 
-#Define the IBS based dendrogram as an object 
+# Define the IBS based dendrogram as an object 
 spis.ibs.18reef.dend <- as.dendrogram(rv2$dendrogram)
 
-#Assigning the labels of the dendrogram object with new colors:
+# Assigning the labels of the dendrogram object with new colors:
 labels_colors(spis.ibs.18reef.dend) <- cols.18reef[sampID.annot$reef][order.dendrogram(spis.ibs.18reef.dend)]
 
 # Dendrogram with labels for each individual 

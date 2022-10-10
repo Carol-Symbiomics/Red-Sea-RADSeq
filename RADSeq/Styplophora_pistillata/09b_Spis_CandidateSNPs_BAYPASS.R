@@ -11,7 +11,7 @@
 # The variance–covariance matrix is used to control for evolutionary history in the calculation of XTX for each SNP
 
 # Export baypass to the PATH
-# export PATH="/home/buitracn/RADseq-Big-project/tools/baypass_2.2/sources:$PATH"
+# export PATH="/home/buitracn/RADseq/Genotyping/tools/baypass_2.2/sources:$PATH"
 
 
 # Better suited than covariance-free models for population with complex hierarchical structure
@@ -57,7 +57,9 @@ fmd.dist(spis_omega2,spis_omega3) #0.01638651
 # comm candidate_loci_Spis1 candidate_loci_Spis3 | awk -F"\t" '{print $3}' | sed '/^$/d' | wc -l #1315
 # comm candidate_loci_Spis2 candidate_loci_Spis3 | awk -F"\t" '{print $3}' | sed '/^$/d' | wc -l #1307
 
+
 #### 09b.03 POD calibration
+
 library(corrplot)
 library(wesanderson)
 library(ggplot2)
@@ -119,9 +121,9 @@ dev.off()
 # The XtX is indeed defined as the variance of the standardized allele frequencies of the SNP across the populations
 # and is thus analogous to a SNP-specific FST that would account for the overall covariance structure of the population allele frequencies (Gunther and Coop 2013)
 
-#get the pod XtX
+# get the pod XtX
 pod.xtx <- read.table("POD_Spis3_summary_pi_xtx.out",h=T)$M_XtX
-#compute the 1% threshold
+# compute the 1% threshold
 pod.thresh.sel <- quantile(pod.xtx,probs=0.999) 
 # 99.9% 
 # 14.51123 

@@ -17,16 +17,16 @@
 # export PATH="/home/buitracn/RADseq/Genotyping/tools/BayeScan:$PATH"
 
 # working directory
-cd /home/buitracn/RADseq/Genotyping/Spis/p1_mac4_r80_448samples/spis_positive_selection_analyses_20210308/BAYESCAN
+cd /home/buitracn/RADseq/Genotyping/Pver/p1.mac4.r0.8.316samples/pver_positive_selection_analyses_20210308/BAYESCAN
 
 # prior odds 100
-bayescan_2.1  spis.popgenclust.bayescan -d monomophicsnpsindex2remove.txt -n 5000 -thin 20 -nbp 50 -pilot 5000 -burn 50000 -pr_odds 100 -threads 40 -od pr_odds100
+bayescan_2.1  pver.popgenclust.bayescan -d monomophicsnpsindex2remove.txt -n 5000 -thin 20 -nbp 50 -pilot 5000 -burn 50000 -pr_odds 100 -threads 40 -od pr_odds100
 
 # prior odds 500
-bayescan_2.1  spis.popgenclust.bayescan -d monomophicsnpsindex2remove.txt -n 5000 -thin 20 -nbp 50 -pilot 5000 -burn 50000 -pr_odds 500 -threads 40 -od pr_odds500
+bayescan_2.1  pver.popgenclust.bayescan -d monomophicsnpsindex2remove.txt -n 5000 -thin 20 -nbp 50 -pilot 5000 -burn 50000 -pr_odds 500 -threads 40 -od pr_odds500
 
 # prior odds 1000       
-bayescan_2.1  spis.popgenclust.bayescan -d monomophicsnpsindex2remove.txt -n 5000 -thin 20 -nbp 50 -pilot 5000 -burn 50000 -pr_odds 1000 -threads 40 -od pr_odds1000             
+bayescan_2.1  pver.popgenclust.bayescan -d monomophicsnpsindex2remove.txt -n 5000 -thin 20 -nbp 50 -pilot 5000 -burn 50000 -pr_odds 1000 -threads 40 -od pr_odds1000             
 
 
 #### 09c.02 Identify the candidates SNPs for positive selection at each run (R environment)
@@ -36,16 +36,16 @@ library(dplyr)
 library(ggplot2)
 
 # Working directory
-setwd("~/RADseq/Genotyping/Spis/p1_mac4_r80_448samples/spis_positive_selection_analyses_20210308/BAYESCAN")
+setwd("~/RADseq/Genotyping/Pver/p1.mac4.r0.8.316samples/pver_positive_selection_analyses_20210308/BAYESCAN")
 
 # Bayescan SNPs dictionary
-spis.bayescan.dictionary <- read.delim("../snps.id.dictionary.BAYESCAN.txt", header = F)
-colnames(spis.bayescan.dictionary) <- c("Scaffold", "POS", "ID", "index")
+pver.bayescan.dictionary <- read.delim("../snps.id.dictionary.BAYESCAN.txt", header = F)
+colnames(pver.bayescan.dictionary) <- c("Scaffold", "POS", "ID", "index")
 
 
 #### pr_100 ####
-spis.bayescan.pr100 <- suppressWarnings(readr::read_table2(
-  file = "./pr_odds100/spis.popgenclust.baye_fst.txt",
+pver.bayescan.pr100 <- suppressWarnings(readr::read_table2(
+  file = "./pr_odds100/pver.popgenclust.baye_fst.txt",
   skip = 1,
   col_names = c("BAYESCAN_MARKERS", "POST_PROB", "LOG10_PO", "Q_VALUE", "ALPHA", "FST"),
   col_types = c("iddddd"))) %>%
@@ -63,16 +63,16 @@ spis.bayescan.pr100 <- suppressWarnings(readr::read_table2(
   )
 
 # get a list of the snp index with evidence of positive, neutral and balancing selection
-pr100.positive <- spis.bayescan.pr100[spis.bayescan.pr100$SELECTION=="diversifying", 1] # 76
-pr100.neutral <- spis.bayescan.pr100[spis.bayescan.pr100$SELECTION=="neutral", 1] 
-pr100.balancing <- spis.bayescan.pr100[spis.bayescan.pr100$SELECTION=="balancing", 1]
+pr100.positive <- pver.bayescan.pr100[pver.bayescan.pr100$SELECTION=="diversifying", 1] # 22
+pr100.neutral <- pver.bayescan.pr100[pver.bayescan.pr100$SELECTION=="neutral", 1] 
+pr100.balancing <- pver.bayescan.pr100[pver.bayescan.pr100$SELECTION=="balancing", 1]
 
 # get the ID of the SNPs identified as positive selection
-Spis.snps.positive.sel.ID.pr100 <- data.frame(spis.bayescan.dictionary[pr100.positive$BAYESCAN_MARKERS, ])
-write.table(Spis.snps.positive.sel.ID.pr100, file = "spis.BAYESCAN.pr100.whitelist.markers.positive.selection.tsv", col.names = T, row.names = F, quote = F) 
+pver.snps.positive.sel.ID.pr100 <- data.frame(pver.bayescan.dictionary[pr100.positive$BAYESCAN_MARKERS, ])
+write.table(pver.snps.positive.sel.ID.pr100, file = "pver.BAYESCAN.pr100.whitelist.markers.positive.selection.tsv", col.names = T, row.names = F, quote = F) 
 
 
-ggplot(data = spis.bayescan.pr100, aes(x = LOG10_Q, y = FST)) +
+ggplot(data = pver.bayescan.pr100, aes(x = LOG10_Q, y = FST)) +
   geom_point(aes(fill=SELECTION),  pch=21, alpha=0.25, size=3) +
   scale_fill_manual(name="Selection", values=c("white","red","orange")) +
   labs(x = "Log10(Q_VALUE)") +
@@ -88,12 +88,12 @@ ggplot(data = spis.bayescan.pr100, aes(x = LOG10_Q, y = FST)) +
     axis.title = element_text(size = 12, family = "Helvetica",face = "bold"),
     axis.text=element_text(size=11),
   )
-ggsave("Spis_Bayescan_prodds_100.pdf", width = 8, height = 5)
+ggsave("pver_Bayescan_prodds_100.pdf", width = 8, height = 5)
 
 
 #### pr_500 ####
-spis.bayescan.pr500 <- suppressWarnings(readr::read_table2(
-  file = "./pr_odds500/spis.popgenclust.baye_fst.txt",
+pver.bayescan.pr500 <- suppressWarnings(readr::read_table2(
+  file = "./pr_odds500/pver.popgenclust.baye_fst.txt",
   skip = 1,
   col_names = c("BAYESCAN_MARKERS", "POST_PROB", "LOG10_PO", "Q_VALUE", "ALPHA", "FST"),
   col_types = c("iddddd"))) %>%
@@ -111,16 +111,16 @@ spis.bayescan.pr500 <- suppressWarnings(readr::read_table2(
   )
 
 # get a list of the snp index with evidence of positive, neutral and balancing selection
-pr500.positive <- spis.bayescan.pr500[spis.bayescan.pr500$SELECTION=="diversifying", 1] # 40
-pr500.neutral <- spis.bayescan.pr500[spis.bayescan.pr500$SELECTION=="neutral", 1] 
-pr500.balancing <- spis.bayescan.pr500[spis.bayescan.pr500$SELECTION=="balancing", 1]
+pr500.positive <- pver.bayescan.pr500[pver.bayescan.pr500$SELECTION=="diversifying", 1] # 40
+pr500.neutral <- pver.bayescan.pr500[pver.bayescan.pr500$SELECTION=="neutral", 1] 
+pr500.balancing <- pver.bayescan.pr500[pver.bayescan.pr500$SELECTION=="balancing", 1]
 
 # get the ID of the SNPs identified as positive selection
-Spis.snps.positive.sel.ID.pr500 <- data.frame(spis.bayescan.dictionary[pr500.positive$BAYESCAN_MARKERS, ])
-write.table(Spis.snps.positive.sel.ID.pr500 , file = "spis.BAYESCAN.pr500.whitelist.markers.positive.selection.tsv", col.names = T, row.names = F, quote = F) 
+pver.snps.positive.sel.ID.pr500 <- data.frame(pver.bayescan.dictionary[pr500.positive$BAYESCAN_MARKERS, ])
+write.table(pver.snps.positive.sel.ID.pr500 , file = "pver.BAYESCAN.pr500.whitelist.markers.positive.selection.tsv", col.names = T, row.names = F, quote = F) 
 
 
-ggplot(data = spis.bayescan.pr500, aes(x = LOG10_Q, y = FST)) +
+ggplot(data = pver.bayescan.pr500, aes(x = LOG10_Q, y = FST)) +
   geom_point(aes(fill=SELECTION),  pch=21, alpha=0.25, size=3) +
   scale_fill_manual(name="Selection", values=c("white","red","orange")) +
   labs(x = "Log10(Q_VALUE)") +
@@ -136,12 +136,12 @@ ggplot(data = spis.bayescan.pr500, aes(x = LOG10_Q, y = FST)) +
     axis.title = element_text(size = 12, family = "Helvetica",face = "bold"),
     axis.text=element_text(size=11),
   )
-ggsave("Spis_Bayescan_prodds_500.pdf", width = 8, height = 5)
+ggsave("pver_Bayescan_prodds_500.pdf", width = 8, height = 5)
 
 
 #### pr_1000 ####
-spis.bayescan.pr1000 <- suppressWarnings(readr::read_table2(
-  file = "./pr_odds1000/spis.popgenclust.baye_fst.txt",
+pver.bayescan.pr1000 <- suppressWarnings(readr::read_table2(
+  file = "./pr_odds1000/pver.popgenclust.baye_fst.txt",
   skip = 1,
   col_names = c("BAYESCAN_MARKERS", "POST_PROB", "LOG10_PO", "Q_VALUE", "ALPHA", "FST"),
   col_types = c("iddddd"))) %>%
@@ -159,16 +159,16 @@ spis.bayescan.pr1000 <- suppressWarnings(readr::read_table2(
   )
 
 # get a list of the snp index with evidence of positive, neutral and balancing selection
-pr1000.positive <- spis.bayescan.pr1000[spis.bayescan.pr1000$SELECTION=="diversifying", 1] # 30
-pr1000.neutral <- spis.bayescan.pr1000[spis.bayescan.pr1000$SELECTION=="neutral", 1] 
-pr1000.balancing <- spis.bayescan.pr1000[spis.bayescan.pr1000$SELECTION=="balancing", 1]
+pr1000.positive <- pver.bayescan.pr1000[pver.bayescan.pr1000$SELECTION=="diversifying", 1] # 30
+pr1000.neutral <- pver.bayescan.pr1000[pver.bayescan.pr1000$SELECTION=="neutral", 1] 
+pr1000.balancing <- pver.bayescan.pr1000[pver.bayescan.pr1000$SELECTION=="balancing", 1]
 
 # get the ID of the SNPs identified as positive selection
-Spis.snps.positive.sel.ID.pr1000 <- data.frame(spis.bayescan.dictionary[pr1000.positive$BAYESCAN_MARKERS, ])
-write.table(Spis.snps.positive.sel.ID.pr1000 , file = "spis.BAYESCAN.pr1000.whitelist.markers.positive.selection.tsv", col.names = T, row.names = F, quote = F) 
+pver.snps.positive.sel.ID.pr1000 <- data.frame(pver.bayescan.dictionary[pr1000.positive$BAYESCAN_MARKERS, ])
+write.table(pver.snps.positive.sel.ID.pr1000 , file = "pver.BAYESCAN.pr1000.whitelist.markers.positive.selection.tsv", col.names = T, row.names = F, quote = F) 
 
 
-ggplot(data = spis.bayescan.pr1000, aes(x = LOG10_Q, y = FST)) +
+ggplot(data = pver.bayescan.pr1000, aes(x = LOG10_Q, y = FST)) +
   geom_point(aes(fill=SELECTION),  pch=21, alpha=0.25, size=3) +
   scale_fill_manual(name="Selection", values=c("white","red","orange")) +
   labs(x = "Log10(Q_VALUE)") +
@@ -184,12 +184,12 @@ ggplot(data = spis.bayescan.pr1000, aes(x = LOG10_Q, y = FST)) +
     axis.title = element_text(size = 12, family = "Helvetica",face = "bold"),
     axis.text=element_text(size=11),
   )
-ggsave("Spis_Bayescan_prodds_1000.pdf", width = 8, height = 5)
+ggsave("pver_Bayescan_prodds_1000.pdf", width = 8, height = 5)
 
 
 ### check common SNPs between the different runs ###
-length(intersect(intersect(pr100.positive$BAYESCAN_MARKERS,pr500.positive$BAYESCAN_MARKERS), pr1000.positive$BAYESCAN_MARKERS)) #30
-length(intersect(pr100.positive$BAYESCAN_MARKERS,pr500.positive$BAYESCAN_MARKERS)) #40
-length(intersect(pr100.positive$BAYESCAN_MARKERS,pr1000.positive$BAYESCAN_MARKERS)) #30
-length(intersect(pr500.positive$BAYESCAN_MARKERS,pr1000.positive$BAYESCAN_MARKERS)) #30
+length(intersect(intersect(pr100.positive$BAYESCAN_MARKERS,pr500.positive$BAYESCAN_MARKERS), pr1000.positive$BAYESCAN_MARKERS)) #9
+length(intersect(pr100.positive$BAYESCAN_MARKERS,pr500.positive$BAYESCAN_MARKERS)) #12
+length(intersect(pr100.positive$BAYESCAN_MARKERS,pr1000.positive$BAYESCAN_MARKERS)) #9
+length(intersect(pr500.positive$BAYESCAN_MARKERS,pr1000.positive$BAYESCAN_MARKERS)) #9
 

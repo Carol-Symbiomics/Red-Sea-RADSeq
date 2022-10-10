@@ -3,7 +3,7 @@
 ###################################################
 
 ##### 04 Pairwise FST between reefs - Stylophora pistillata #####
-# Using set of unlinked SNPs (25,443 SNPs - 367 ind)
+# Using set of unlinked SNPs (25,318 SNPs - 367 ind)
 
 library(dartR)
 library(StAMPP)

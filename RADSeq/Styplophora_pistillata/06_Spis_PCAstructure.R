@@ -10,11 +10,12 @@
 setwd("~/RADseq/Genotyping/Spis/p1_mac4_r80_448samples/spis_PCAplink_20210222")
 
 # Run PCA
+# variants aren't ordered in ascending order in each chromosome, so bed file has to be done first to overcome the problem and then PCA can be perform (plink1.9)
 system("~/RADseq/Genotyping/tools/plink --vcf ../spis_vcftools_filtered_vcf/spis.LE.filtered.recode.indnames.vcf --allow-extra-chr --make-bed --out spis.LE.filtered.4PCA")
 system("~/RADseq/Genotyping/tools/plink --bfile spis.LE.filtered.4PCA --pca --allow-extra-chr --out spis.LE.filtered.PCA")
 
 
-#### 06.02 PCA visualization of Stylophora istillata (LE dataset)
+#### 06.02 PCA visualization (LE dataset)
 
 # Libraries
 library(tidyverse)

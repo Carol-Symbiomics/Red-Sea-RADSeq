@@ -3,7 +3,7 @@
 ###################################################
 
 ##### 05 Isolation by distance - Stylophora pistillata #####
-# Using set of unlinked SNPs (25,443 SNPs - 367 ind)
+# Using set of unlinked SNPs (25,318 SNPs - 367 ind)
 
 # Libraries
 library(dartR)

@@ -4,7 +4,7 @@
 
 ##### 07b ADMIXTURE population structure - Stylophora pistillata #####
 
-####  07b.01  Visualization of the cross validation error beteween ADMIXTURE run - Stylophora pistillata
+####  07b.01  Visualization of the cross validation error beteween ADMIXTURE run 
 
 # libraries
 library(tidyr)
@@ -45,7 +45,7 @@ ggplot(cv10.df.long, aes(x=k.clust, y=value)) + geom_point() +
         strip.text = element_text(size = 6))
 dev.off()
 
-####  07b.02  Visualization of the ADMIXTURE barplots - Stylophora pistillata
+####  07b.02  Visualization of the ADMIXTURE barplots
 
 # After assement of the CV distribution and value ranges we determine that --cv=10 lead to smaller cross validation values than --cv=5 (default)
 # Nevetheless the ADMIXTURE plots were inspected using PONG
@@ -66,7 +66,7 @@ write.table(spis.strata$REEF, "spis.ind2pop", col.names = F, quote = F, row.name
 # id order genetic assignment (sample SKAU-R2-13 was discarded in comparison with previous run)
 # Get the individuals order based on the major cluster in each reef was attained based on run5 K7
 spis.k7.majormode.run5.pong <- read.table("../run_cve_10fold_5/spis.367ind.LE.plink.7.Q")
-colnames(spis.k7.majormode.run5.pong) <- c("CL1", "CL2", "CL3", "CL4", "CL5", "CL6", "CL7")
+colnames(spis.k7.majormode.run5.pong) <- c("SCL1", "SCL2", "SCL3", "SCL4", "SCL5", "SCL6", "SCL7")
 spis.k7.majormode.run5.pong$ind <- spis.strata$INDIVIDUALS
 spis.k7.majormode.run5.pong$reef <- spis.strata$REEF
 spis.k7.majormode.run5.pong$reef <- factor(spis.k7.majormode.run5.pong$reef, levels = c("MAQ-R1", "MAQ-R2", "WAJ-R1", "WAJ-R3", "WAJ-R4", "YAN-R1", "YAN-R3", "YAN-R4", "KAU-R1", "KAU-R2", "KAU-R3", "DOG-R1", "DOG-R2", "DOG-R3", "FAR-R1", "FAR-R2", "FAR-R3", "FAR-R4"), ordered = T)
@@ -180,7 +180,7 @@ k7
 ggsave(filename = "TEST_k7.majormoderun5pong.pdf", plot = k7, width = 70, height = 7,  units = "cm")
 
 
-####  07b.03  Visualization of the genetic divergence between ancestral populations - Stylophora pistillata
+####  07b.03  Visualization of the genetic divergence between ancestral populations 
 
 # Libraries
 library(ape)
@@ -206,7 +206,6 @@ write.tree(tree.k6, file = "tree.k6.newick", append = FALSE,
            digits = 10, tree.names = FALSE)
 
 myPal.k6 <- c("#FE92CD", "#1E90FF","#FF4500", "#C71585", "#FFD700", "#32CD32")
-
 show_col(myPal.k6)
 
 pdf("Spis_ancestral_populations_unrootedtree_k6_FSTdivergence_based.pdf", width = 5, height = 4)
@@ -223,7 +222,7 @@ title("Spis Ancestral populations - Unrooted NJ tree (k6)")
 dev.off()
 
 
-####  07b.04  Identify individuals assigned to a unique genetic cluster (≥90 asignment probability to a unique genetic cluster) - Stylophora pistillata
+####  07b.04  Identify individuals assigned to a unique genetic cluster (≥90 asignment probability to a unique genetic cluster) 
 
 # Libraries
 library(dplyr)
